@@ -7,17 +7,12 @@ package com.solbegsoft.authapi.models.entities;
 public enum ERole {
 
     /**
-     * role for user
+     * role only read
      */
-    USER,
+    READER,
 
     /**
-     * role for moderator
+     * role to write
      */
-    MODERATOR,
-
-    /**
-     * Admin role
-     */
-    ADMIN
+    WRITER
 }

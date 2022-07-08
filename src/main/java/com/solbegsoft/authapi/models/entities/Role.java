@@ -14,7 +14,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -42,6 +44,13 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(length = 24)
     private ERole name;
+
+    /**
+     *  Collections users and roles
+     */
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "roles")
+    private Collection<User> users;
 
     /**
      * Constructor with

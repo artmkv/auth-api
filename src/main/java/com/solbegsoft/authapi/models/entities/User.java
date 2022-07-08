@@ -12,7 +12,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -42,22 +47,44 @@ public class User {
     private String username;
 
     /**
-     * password encrypted
-     */
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    /**
      * email
      */
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     /**
-     * role
+     * password encrypted
      */
-    @Column(name = "role_id")
-    private String role;
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    /**
+     * Country
+     */
+    @Column(name = "country", nullable = false)
+    private String country;
+
+    /**
+     * Gender
+     */
+    @Column(name = "gender")
+    private String gender;
+
+    /**
+     * Date of birth
+     */
+    @Column(name = "birthday")
+    private LocalDate birthday;
+
+    /**
+     * Collections users and roles
+     */
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     /**
      * Equals
