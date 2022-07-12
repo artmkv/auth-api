@@ -1,26 +1,24 @@
 package com.solbegsoft.authapi.models.dtos;
 
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.solbegsoft.authapi.models.entities.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User detail dto
  */
 @Data
-@Builder
+@AllArgsConstructor
 public class UserDetailsDto implements UserDetails {
-
-    /**
-     * username
-     */
-    private String username;
 
     /**
      * email
@@ -30,16 +28,28 @@ public class UserDetailsDto implements UserDetails {
     /**
      * password
      */
+    @JsonIgnore
     private String password;
 
     /**
-     * role
+     * roles
      */
-    private String role;
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(role));
+
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -49,15 +59,7 @@ public class UserDetailsDto implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
         return email;
-    }
-
-    public String getRole() {
-        return role;
     }
 
     @Override

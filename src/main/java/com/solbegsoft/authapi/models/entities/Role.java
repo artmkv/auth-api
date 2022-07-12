@@ -7,18 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import java.util.Collection;
+import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Set;
 
 /**
  * Role
@@ -36,13 +27,13 @@ public class Role {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     /**
      * @see ERole
      */
     @Enumerated(EnumType.STRING)
-    @Column(length = 24)
+    @Column(length = 50)
     private ERole name;
 
     /**
@@ -50,16 +41,7 @@ public class Role {
      */
     @ToString.Exclude
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
-
-    /**
-     * Constructor with
-     *
-     * @param name
-     */
-    public Role(ERole name) {
-        this.name = name;
-    }
+    private Set<User> users;
 
     @Override
     public boolean equals(Object o) {
