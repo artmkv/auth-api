@@ -2,7 +2,7 @@ package com.solbegsoft.authapi.models.entities;
 
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
@@ -18,8 +18,8 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@Table(name = "roles")
-@NoArgsConstructor
+@Table(name = "roles", schema = "auth_service")
+@RequiredArgsConstructor
 public class Role {
 
     /**

@@ -20,7 +20,7 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "users")
+@Table(name = "users", schema = "auth_service")
 public class User {
 
     /**
