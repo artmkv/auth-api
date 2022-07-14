@@ -1,10 +1,7 @@
 package com.solbegsoft.authapi.models.entities;
 
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -16,11 +13,11 @@ import java.util.Set;
  * User entity
  */
 @Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
+@Builder
 @Table(name = "users", schema = "auth_service")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     /**
@@ -71,7 +68,7 @@ public class User {
      * Collections users and roles
      */
     @ToString.Exclude
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))

@@ -10,16 +10,17 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Auth controller
+ * Authentication controller
  */
 @RestController
 @RequestMapping("auth-api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthenticationController {
 
     /**
@@ -40,7 +41,7 @@ public class AuthenticationController {
     /**
      * Get token
      *
-     * @return
+     * @return {@link ResponseApi} with token
      */
     @PostMapping
     public ResponseApi<String> getAuthentication(@RequestBody AuthRequest request) throws Exception {
@@ -56,4 +57,5 @@ public class AuthenticationController {
         final String token = jwtTokenService.createToken(userDetails.getUsername());
         return new ResponseApi<>(token);
     }
+
 }

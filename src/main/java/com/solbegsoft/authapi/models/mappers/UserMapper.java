@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * UserDetailsDto mapper
@@ -16,15 +16,20 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserMapper {
 
-    private final UserDetailsDto userDetailsDto;
-    public UserDetails toDto(User user){
+    /**
+     * Mapped User to UserDetails
+     *
+     * @param user
+     * @return
+     */
+    public UserDetails toDto(User user) {
 
-        if(Objects.nonNull(user)){
-            return new UserDetailsDto(
-                    user.getEmail(),
-                    user.getPassword(),
-                    user.getRoles());
-        }
-        return null;
+        return Optional.ofNullable(user)
+                .map(x -> new UserDetailsDto(
+                        x.getUsername(),
+                        x.getEmail(),
+                        x.getPassword(),
+                        x.getRoles()))
+                .orElse(null);
     }
 }

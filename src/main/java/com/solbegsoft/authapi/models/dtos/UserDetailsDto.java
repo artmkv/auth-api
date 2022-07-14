@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
 public class UserDetailsDto implements UserDetails {
 
     /**
+     * username
+     */
+    private String username;
+
+    /**
      * email
      */
     private String email;
@@ -44,14 +49,6 @@ public class UserDetailsDto implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     @Override
     public String getPassword() {
         return password;
@@ -59,7 +56,7 @@ public class UserDetailsDto implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
