@@ -20,6 +20,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenService implements TokenService {
 
+    private static final String BEARER_PREFIX = "Bearer ";
+
     /**
      * token secret key
      */
@@ -57,5 +59,10 @@ public class JwtTokenService implements TokenService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public String createBearer(String token) {
+        return BEARER_PREFIX + token;
     }
 }

@@ -69,7 +69,6 @@ public class SecurityConfiguration {
 
         http.csrf().disable();
         http.cors().disable();
-        http.exceptionHandling().authenticationEntryPoint(authEntryPointJwt);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers(HttpMethod.POST, "auth-api/v1/auth").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "auth-api/v1/test/signup").permitAll();
