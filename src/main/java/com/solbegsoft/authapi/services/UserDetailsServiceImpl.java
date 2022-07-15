@@ -2,7 +2,6 @@ package com.solbegsoft.authapi.services;
 
 
 import com.solbegsoft.authapi.models.mappers.UserMapper;
-import com.solbegsoft.authapi.repositories.RoleRepository;
 import com.solbegsoft.authapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,11 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @see UserRepository
      */
     private final UserRepository userRepository;
-
-    /**
-     * @see RoleRepository
-     */
-    private final RoleRepository roleRepository;
 
     /**
      * @see UserMapper

@@ -42,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
+
     /**
      * Create bean
      *
@@ -69,8 +70,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.cors().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/auth-api/v1/auth").permitAll();
-        http.authorizeRequests().antMatchers("/auth-api/v1/test/**").permitAll();
+        http
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/auth-api/v1/auth").permitAll()
+                .antMatchers("/auth-api/v1/test/all").permitAll()
+                .antMatchers(HttpMethod.POST,"/auth-api/v1/test/s").permitAll()
+                .antMatchers("/auth-api/v1/test/r").hasAuthority("ROLE_READER")
+                .antMatchers("/auth-api/v1/test/w").hasAuthority("ROLE_WRITER");
         http.authorizeRequests().anyRequest().authenticated();
 
         JwtAuthFilter tokenFilter = new JwtAuthFilter(userDetailService, jwtTokenService);
@@ -82,5 +87,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
 
         web.ignoring().antMatchers(HttpMethod.POST, "/auth-api/v1/auth");
+        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/auth-api/v1/**");
     }
 }
