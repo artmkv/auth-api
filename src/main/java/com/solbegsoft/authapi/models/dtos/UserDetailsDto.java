@@ -1,7 +1,6 @@
 package com.solbegsoft.authapi.models.dtos;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.solbegsoft.authapi.models.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +32,6 @@ public class UserDetailsDto implements UserDetails {
     /**
      * password
      */
-    @JsonIgnore
     private String password;
 
     /**
@@ -45,7 +43,7 @@ public class UserDetailsDto implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
 
