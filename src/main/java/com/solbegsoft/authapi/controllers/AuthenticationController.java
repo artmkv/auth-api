@@ -57,5 +57,4 @@ public class AuthenticationController {
         final String token = jwtTokenService.createToken(userDetails.getUsername());
         return new ResponseApi<>(token);
     }
-
 }
