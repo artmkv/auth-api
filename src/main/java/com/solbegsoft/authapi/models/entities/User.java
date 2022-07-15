@@ -13,11 +13,12 @@ import java.util.Set;
  * User entity
  */
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @Table(name = "users", schema = "auth_service")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     /**
@@ -67,9 +68,9 @@ public class User {
     /**
      * Collections users and roles
      */
-    @ToString.Exclude
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
+            schema = "auth_service",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;

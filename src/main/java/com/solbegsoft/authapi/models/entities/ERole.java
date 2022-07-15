@@ -9,10 +9,10 @@ public enum ERole {
     /**
      * role only read
      */
-    READER,
+    ROLE_READER,
 
     /**
      * role to write
      */
-    WRITER
+    ROLE_WRITER
 }

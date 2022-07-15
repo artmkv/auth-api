@@ -1,10 +1,7 @@
 package com.solbegsoft.authapi.models.entities;
 
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -17,9 +14,10 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
+@Builder
 @Table(name = "roles", schema = "auth_service")
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
 
     /**
@@ -32,15 +30,13 @@ public class Role {
     /**
      * @see ERole
      */
-    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private ERole name;
+    private String name;
 
     /**
      *  Collections users and roles
      */
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 
     @Override
