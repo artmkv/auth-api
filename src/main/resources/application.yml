@@ -4,12 +4,22 @@ spring:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/demobase}
     username: ${DB_USER:postgres}
     password: ${DB_PASS:pass}
+  application:
+    name: auth-api
 
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8081}
 
 #Aplication properties
 app:
   jwt:
     secret: ${JWT_SECRET:Fx54Yey23Ur}
     expirationS: ${JWT_EXPIRATION_S:300}
+
+eureka:
+  instance:
+    appname: auth-api
+  client:
+    fetchRegistry: true
+    service-url:
+      default-zone: http://localhost:8761/eureka

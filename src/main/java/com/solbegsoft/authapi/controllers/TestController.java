@@ -9,7 +9,6 @@ import com.solbegsoft.authapi.repositories.RoleRepository;
 import com.solbegsoft.authapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +32,8 @@ public class TestController {
      */
     @GetMapping("/all")
     public String getAll(){
-        return "Public Api. TEST for ALL user";
+
+        return "This message from Public Endpoint of Auth-api.";
     }
 
     /**
@@ -41,7 +41,6 @@ public class TestController {
      * @return
      */
     @GetMapping("/r")
-//    @PreAuthorize("hasRole('ROLE_READER')")
     public String getReaderUserApi(){
         return "READER API";
     }
@@ -51,11 +50,9 @@ public class TestController {
      * @return
      */
     @GetMapping("/w")
-//    @PreAuthorize("hasRole('ROLE_WRITER')")
     public String getWriterUserApi(){
         return "WRITER API";
     }
-
 
 
     @GetMapping("/s")
