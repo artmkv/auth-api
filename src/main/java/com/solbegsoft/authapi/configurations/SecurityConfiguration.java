@@ -79,9 +79,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers(HttpMethod.POST, "/auth-api/v1/auth").permitAll()
                 .antMatchers("/auth-api/v1/test/all").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth-api/v1/test/s").permitAll()
+                .antMatchers("/beer/**").permitAll()
+                .antMatchers("/auth/auth-api/v1/test/all").permitAll()
+//                .antMatchers("/beer/beers-api/v1/beers").permitAll()
                 .antMatchers("/auth-api/v1/test/r").hasAuthority("ROLE_READER")
                 .antMatchers("/auth-api/v1/test/w").hasAuthority("ROLE_WRITER");
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
 
         JwtAuthFilter tokenFilter = new JwtAuthFilter(userDetailService, jwtTokenService);
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -93,5 +96,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         web.ignoring().antMatchers(HttpMethod.POST, "/auth-api/v1/auth");
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/auth-api/v1/**");
+        web.ignoring().antMatchers(HttpMethod.GET, "/beer/**");
     }
 }
