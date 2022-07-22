@@ -16,27 +16,37 @@ app:
     secret: ${JWT_SECRET:Fx54Yey23Ur}
     expirationS: ${JWT_EXPIRATION_S:300}
 
+ribbon:
+  eureka:
+    enabled: true
 eureka:
   instance:
     appname: auth-api
   client:
     fetchRegistry: true
-    register-with-eureka: true
+    register-with-eureka: false
     service-url:
       default-zone: http://localhost:8761/eureka
 
-
 zuul:
-  routes:
-    beers:
-      path: /beer/**
-      serviceId: beers-api
-    #      url: http://localhost:8091/beers-api/v1/beers?beerName=Buzz
-    auth:
-      path: /auth/**
-      url: forward:/
-#      strip-prefix: true
-#      serviceId: auth-api
-#      url: http://localhost:8081/auth-api/v1/test/all
   host:
-    socket-timeout-millis: 50000
+    connect-timeout-millis: 500000
+    socket-timeout-millis: 500000
+  ignored-services: "*"
+  routes:
+    beers-api:
+      path: /beers-api/**
+      url: http://localhost:8091/beers-api
+      strip-prefix: true
+    auth-api:
+      path: /auth/**
+      url: forward:/auth-api
+      strip-prefix: true
+
+hystrix:
+  command:
+    beers-api:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 500000
