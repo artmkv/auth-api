@@ -8,7 +8,7 @@ VALUES ('user1', 'user1@test.com', '$2a$10$pn6rYWViz2K.T5C59LDePuS6aB9dTp/22KFN5
        ('userR', 'usread@mail.com', '$2a$10$Rzv7jRPbNSLYh07k2o2M5.QJxWgD7RUlOG2AlCE.g93qepzcDiupi', 'Poland', 'male', '1999-05-14');
 
 INSERT INTO auth_service.users_roles(user_id, role_id)
-VALUES(1,1),
-      (2,1),
-      (2,2),
-      (3,1);
+VALUES((SELECT id FROM auth_service.users u WHERE u.id = 'user1'), (SELECT id FROM auth_service.roles r WHERE r.id = 'ROLE_READER')),
+      ((SELECT id FROM auth_service.users u WHERE u.id = 'userWR'), (SELECT id FROM auth_service.roles r WHERE r.id = 'ROLE_READER')),
+      ((SELECT id FROM auth_service.users u WHERE u.id = 'userWR'), (SELECT id FROM auth_service.roles r WHERE r.id = 'ROLE_WRITER')),
+      ((SELECT id FROM auth_service.users u WHERE u.id = 'userR'), (SELECT id FROM auth_service.roles r WHERE r.id = 'ROLE_READER'));
