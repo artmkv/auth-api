@@ -6,27 +6,31 @@ spring:
     password: ${DB_PASS:pass}
   application:
     name: auth-api
+  flyway:
+    schemas: auth_service
 
 server:
-  port: ${PORT:8081}
+  port: 8081
 
 #Aplication properties
 app:
   jwt:
     secret: ${JWT_SECRET:Fx54Yey23Ur}
-    expirationS: ${JWT_EXPIRATION_S:300}
+    expiration-sec: ${JWT_EXPIRATION_S:300}
 
 ribbon:
   eureka:
     enabled: true
+
 eureka:
   instance:
     appname: auth-api
   client:
+    eureka-server-port: 8761
+    register-with-eureka: true
     fetchRegistry: true
-    register-with-eureka: false
     service-url:
-      default-zone: http://localhost:8761/eureka
+      default-zone: http://eureka-server:${eureka.client.eureka-server-port}/eureka
 
 zuul:
   host:
