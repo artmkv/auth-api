@@ -9,7 +9,7 @@ CREATE TABLE auth_service.users
     birthday DATE
 );
 
-CREATE TABLE roles
+CREATE TABLE auth_service.roles
 (
     id   BIGSERIAL PRIMARY KEY,
     name CHARACTER VARYING(64) NOT NULL
