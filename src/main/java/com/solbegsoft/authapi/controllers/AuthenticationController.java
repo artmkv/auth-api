@@ -48,10 +48,11 @@ public class AuthenticationController {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    request.getLogin(),
+                    request.getLogin(), // TODO: 30.07.2022, а если логин или пароль null или пустая строка?
                     request.getPassword()));
         } catch (BadCredentialsException e) {
             throw new Exception("Invalid username or password");
+            // TODO: 30.07.2022 зачем юзать Exception ???? Обработкой  BadCredentialsException должен заниматься ExceptionHandler, кстати, а где он? =)
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getLogin());
         final String token = jwtTokenService.createToken(userDetails.getUsername());

@@ -12,6 +12,7 @@ spring:
 server:
   port: 8081
 
+#todo избыточный комментарий!
 #Aplication properties
 app:
   jwt:

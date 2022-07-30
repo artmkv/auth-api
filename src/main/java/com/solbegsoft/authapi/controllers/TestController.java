@@ -68,6 +68,11 @@ public class TestController {
     @PostMapping("/s")
     public ResponseEntity<?> postRegisterUser(@RequestBody RegisterRequest signupRequest) {
 
+        // TODO: 30.07.2022 Это полотно валидации адище, юзай validation https://www.baeldung.com/javax-validation
+        // понятно, что тестовый контроллер и т.п., но значительно быстрее кинуть пару анноташек, чем писать всё это
+        // а что если в RegisterRequest username null? или email? Все тела запросов должны валидироваться
+
+        // TODO: 30.07.2022 странная проверка, у нас не может быть 3 условных Johna ? Поправь пожалуйста и в ентити, там тоже стоит ограничение(уникальность)
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -97,7 +102,9 @@ public class TestController {
             roles.add(userRole);
         } else {
             reqRoles.forEach(r -> {
-                switch (r) {
+                // TODO: 30.07.2022 switch не очень хорошо использовать, имеет свои недостатки, либо if/else, либо паттерн стратегия
+                // нарушен принцип DRY - у тебя повтояряется код, разница только в том, что меняется текст и роль
+                switch (r) { // TODO: 30.07.2022 а что такое "r" ? имена переменных должны быть именами, а не символами
                     case "WRITER":
                         Role wrRole = roleRepository
                                 .findByName(ERole.ROLE_WRITER.name())

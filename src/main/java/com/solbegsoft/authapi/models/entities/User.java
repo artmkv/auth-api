@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "users", schema = "auth_service")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User { // TODO: 30.07.2022 тут явно не хватает индексов ) добвь их через флайвей, если будут вопросы пиши)
 
     /**
      * id
@@ -32,7 +32,7 @@ public class User {
     /**
      * username
      */
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false) // TODO: 30.07.2022 уникальность имени не нужна
     private String username;
 
     /**

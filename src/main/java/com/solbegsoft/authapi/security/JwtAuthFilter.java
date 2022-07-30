@@ -26,7 +26,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * Header token prefix
      */
-    private static final String HEADER_TOKEN_PREFIX = "Bearer ";
+    private static final String HEADER_TOKEN_PREFIX = "Bearer "; // TODO: 30.07.2022 нарушен принцип DRY у тебея 2 константы, вторая такая же в JwtTokenService
 
     /**
      * Header authorization
@@ -41,6 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * @see JwtTokenService
      */
+    // TODO: 30.07.2022 используешь реализацию вместо абстракции не гуд
     private final JwtTokenService jwtTokenService;
 
     @Override
@@ -48,7 +49,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = request.getHeader(HEADER_AUTHORIZATION);;
 
-        if (token != null && token.startsWith(HEADER_TOKEN_PREFIX)) {
+        if (token != null && token.startsWith(HEADER_TOKEN_PREFIX)) { // TODO: 30.07.2022 я бы юзал Objects.nonNull(token)
             token = token.replace(HEADER_TOKEN_PREFIX, "");
             String username = jwtTokenService.validateTokenAndGetUsername(token);
 
@@ -62,6 +63,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         else {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
+        // TODO: 30.07.2022 воу воу, нашел бажину 49 строка у тебя токен и вдруг потом мы идем по ветке else и ты тут к Bearer18230123 фигачишь еще раз Bearer
         response.setHeader(HEADER_AUTHORIZATION, jwtTokenService.createBearer(token));
         filterChain.doFilter(request, response);
     }

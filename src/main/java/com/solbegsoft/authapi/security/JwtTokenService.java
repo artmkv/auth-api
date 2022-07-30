@@ -20,7 +20,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenService implements TokenService {
 
-    private static final String BEARER_PREFIX = "Bearer ";
+    private static final String BEARER_PREFIX = "Bearer "; // TODO: 30.07.2022 DRY, можно создать класс констант где будут храниться константы секуры
 
     /**
      * token secret key
@@ -53,6 +53,7 @@ public class JwtTokenService implements TokenService {
                     .parseClaimsJws(token).getBody();
             Date expiration = claims.getExpiration();
             if (expiration.before(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))) {
+                // TODO: 30.07.2022 надо подумать, но скорее всего я бы тут кидал эксепшн какой-нить типа BadCred..., а вместо строки, объект который внутри себя хранит строку. Скорее всего тебе так придется делать)
                 return null;
             }
             return claims.getSubject();

@@ -11,6 +11,7 @@ import java.util.Set;
 @Data
 public class RegisterRequest {
 
+    // TODO: 30.07.2022 валидация и т.п.
     private String username;
 
     private String email;

@@ -23,7 +23,7 @@ public class UserMapper {
     public UserDetails toDto(User user) {
 
         return Optional.ofNullable(user)
-                .map(x -> new UserDetailsDto(
+                .map(x -> new UserDetailsDto( // TODO: 30.07.2022 что за 'X' ?????  ну и уже тогда добавляй mapstruct!!
                         x.getUsername(),
                         x.getEmail(),
                         x.getPassword(),

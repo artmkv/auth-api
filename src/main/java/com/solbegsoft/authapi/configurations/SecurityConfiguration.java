@@ -80,7 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth-api/v1/auth").permitAll()
                 .antMatchers("/auth-api/v1/test/all").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth-api/v1/test/s").permitAll()
-                .antMatchers("/auth-api/v1/test/r").hasAuthority("ROLE_READER")
+                .antMatchers("/auth-api/v1/test/r").hasAuthority("ROLE_READER") // TODO: 30.07.2022 you should use enam value ERole.ROLE_READER.name()
                 .antMatchers("/auth-api/v1/test/w").hasAuthority("ROLE_WRITER");
         http.authorizeRequests().anyRequest().authenticated();
 

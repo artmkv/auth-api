@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
+    // TODO: 30.07.2022 вроде же за логин решили юзать имейл? если так, то зачем мы ищем по юзернейму?
 
     Boolean existsByUsername(String username);
 
