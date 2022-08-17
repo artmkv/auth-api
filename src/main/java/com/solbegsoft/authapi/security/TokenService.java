@@ -9,23 +9,24 @@ public interface TokenService {
     /**
      * Create Token
      *
-     * @param username
-     * @return
+     * @param username  Username
+     * @param id User ID
+     * @return token
      */
-    String createToken(String username);
+    String createTokenUsingTokenSubject(String username, Long id);
 
     /**
      * validate Token
      *
-     * @param token
+     * @param token Token
      * @return username
      */
-    String validateTokenAndGetUsername(String token);
+    TokenSubject validateTokenAndGetTokenSubject(String token);
 
     /**
      * create Bearer + token
      *
-     * @param token
+     * @param token token
      * @return string
      */
     String createBearer(String token);

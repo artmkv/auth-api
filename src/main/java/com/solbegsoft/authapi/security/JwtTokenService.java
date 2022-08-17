@@ -1,17 +1,24 @@
 package com.solbegsoft.authapi.security;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solbegsoft.authapi.exceptions.SecurityTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+
+import static com.solbegsoft.authapi.security.SecurityConstants.HEADER_TOKEN_PREFIX;
+import static com.solbegsoft.authapi.utils.MessagesExceptionConstants.BAD_CREDENTIAL;
 
 /**
  * jwt token service
@@ -20,7 +27,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenService implements TokenService {
 
-    private static final String BEARER_PREFIX = "Bearer "; // TODO: 30.07.2022 DRY, можно создать класс констант где будут храниться константы секуры
+    /**
+     * Object Mapper
+     */
+    private final ObjectMapper objectMapper;
 
     /**
      * token secret key
@@ -34,11 +44,18 @@ public class JwtTokenService implements TokenService {
     @Value("${JWT_EXPIRATION_S:300}")
     private int expirationS;
 
-    @Override
-    public String createToken(String username) {
+    public String createTokenUsingTokenSubject(String username, Long userId) {
+
+        TokenSubject sub = new TokenSubject(username, userId);
+        String result;
+        try {
+            result = objectMapper.writeValueAsString(sub);
+        } catch (JsonProcessingException e) {
+            throw new SecurityTokenException(e.getMessage());
+        }
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(result)
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(LocalDateTime.now().plusSeconds(expirationS).toInstant(ZoneOffset.UTC)))
                 .signWith(SignatureAlgorithm.HS256, key)
@@ -46,24 +63,24 @@ public class JwtTokenService implements TokenService {
     }
 
     @Override
-    public String validateTokenAndGetUsername(String token) {
+    public TokenSubject validateTokenAndGetTokenSubject(String token) {
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(key))
                     .parseClaimsJws(token).getBody();
             Date expiration = claims.getExpiration();
             if (expiration.before(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))) {
-                // TODO: 30.07.2022 надо подумать, но скорее всего я бы тут кидал эксепшн какой-нить типа BadCred..., а вместо строки, объект который внутри себя хранит строку. Скорее всего тебе так придется делать)
-                return null;
+                throw new BadCredentialsException(BAD_CREDENTIAL);
             }
-            return claims.getSubject();
+            return objectMapper.readValue(claims.getSubject(), TokenSubject.class);
         } catch (Exception e) {
-            return null;
+            throw new SecurityTokenException(e.getMessage());
         }
     }
 
     @Override
     public String createBearer(String token) {
-        return BEARER_PREFIX + token;
+        return HEADER_TOKEN_PREFIX + token;
     }
+
 }
