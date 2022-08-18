@@ -16,7 +16,7 @@ public interface TokenService {
     String createTokenUsingTokenSubject(String username, Long id);
 
     /**
-     * validate Token
+     * Validate Token
      *
      * @param token Token
      * @return username
@@ -24,10 +24,10 @@ public interface TokenService {
     TokenSubject validateTokenAndGetTokenSubject(String token);
 
     /**
-     * create Bearer + token
+     * Create Bearer + token
      *
      * @param token token
-     * @return string
+     * @return {@link TokenSubject}
      */
     String createBearer(String token);
 }

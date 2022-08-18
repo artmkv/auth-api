@@ -1,6 +1,7 @@
 package com.solbegsoft.authapi.configurations;
 
 
+import com.solbegsoft.authapi.models.entities.ERole;
 import com.solbegsoft.authapi.security.JwtAuthFilter;
 import com.solbegsoft.authapi.security.JwtTokenService;
 import com.solbegsoft.authapi.services.UserDetailsServiceImpl;
@@ -80,13 +81,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth-api/v1/auth").permitAll()
                 .antMatchers("/auth-api/v1/test/all").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth-api/v1/test/s").permitAll()
-                .antMatchers("/auth-api/v1/test/r").hasAuthority("ROLE_READER") // TODO: 30.07.2022 you should use enam value ERole.ROLE_READER.name()
-                .antMatchers("/auth-api/v1/test/w").hasAuthority("ROLE_WRITER");
+                .antMatchers("/auth-api/v1/test/r").hasAuthority(ERole.ROLE_READER.name())
+                .antMatchers("/auth-api/v1/test/w").hasAuthority(ERole.ROLE_WRITER.name());
         http.authorizeRequests().anyRequest().authenticated();
-
         JwtAuthFilter tokenFilter = new JwtAuthFilter(userDetailService, jwtTokenService);
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Override

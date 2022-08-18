@@ -12,12 +12,10 @@ spring:
 server:
   port: 8081
 
-#todo избыточный комментарий!
-#Aplication properties
 app:
   jwt:
     secret: ${JWT_SECRET:Fx54Yey23Ur}
-    expiration-sec: ${JWT_EXPIRATION_S:300}
+    expiration-sec: ${JWT_EXPIRATION_S:300000}
 
 ribbon:
   eureka:
@@ -42,6 +40,10 @@ zuul:
     beers-api:
       path: /beers-api/**
       url: http://localhost:8091/beers-api
+      strip-prefix: true
+    favorites-api:
+      path: /favorites-api/**
+      url: http://localhost:8071/favorites-api
       strip-prefix: true
     auth-api:
       path: /auth/**

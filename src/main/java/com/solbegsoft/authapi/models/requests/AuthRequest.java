@@ -3,6 +3,8 @@ package com.solbegsoft.authapi.models.requests;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * request for authentication
  */
@@ -12,10 +14,12 @@ public class AuthRequest {
     /**
      * login
      */
-    private String login; // TODO: 30.07.2022 тут должна быть валидация @NotBlank ну и с пасс тоже самое, ну и если логин является имейлом тоже можно кинуть валидацию
+    @NotBlank
+    private String login;
 
     /**
      * password
      */
+    @NotBlank
     private String password;
 }

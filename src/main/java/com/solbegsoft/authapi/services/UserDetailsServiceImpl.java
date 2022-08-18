@@ -1,7 +1,8 @@
 package com.solbegsoft.authapi.services;
 
 
-import com.solbegsoft.authapi.models.mappers.UserMapper;
+import com.solbegsoft.authapi.models.dtos.UserDetailsDto;
+import com.solbegsoft.authapi.models.mappers.UserConverter;
 import com.solbegsoft.authapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * CustomUserDetailsService
+ * UserDetailsService implement
  */
 @Service
 @RequiredArgsConstructor
@@ -23,16 +24,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     /**
-     * @see UserMapper
+     * @see UserConverter
      */
-    private final UserMapper userMapper;
+    private final UserConverter userConverter;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return userRepository.findByUsername(username)
-                .map(userMapper::toDto)
+        return userRepository.findByEmail(username)
+                .map(userConverter::convertToDto)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
+
 }

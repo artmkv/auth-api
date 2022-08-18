@@ -12,14 +12,12 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    Optional<User> findByUsername(String username);
-    // TODO: 30.07.2022 вроде же за логин решили юзать имейл? если так, то зачем мы ищем по юзернейму?
-
-    Boolean existsByUsername(String username);
-
+    /**
+     * Find by email
+     *
+     * @param email
+     * @return
+     */
     Optional<User> findByEmail(String email);
-
-    Boolean existsByEmail(String email);
 
 }

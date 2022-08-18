@@ -19,7 +19,8 @@ import java.util.Set;
 @Table(name = "users", schema = "auth_service")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User { // TODO: 30.07.2022 тут явно не хватает индексов ) добвь их через флайвей, если будут вопросы пиши)
+public class User {
+    // TODO: 30.07.2022 тут явно не хватает индексов ) добвь их через флайвей, если будут вопросы пиши)
 
     /**
      * id
@@ -32,7 +33,7 @@ public class User { // TODO: 30.07.2022 тут явно не хватает ин
     /**
      * username
      */
-    @Column(name = "username", unique = true, nullable = false) // TODO: 30.07.2022 уникальность имени не нужна
+    @Column(name = "username", nullable = false)
     private String username;
 
     /**
@@ -69,8 +70,7 @@ public class User { // TODO: 30.07.2022 тут явно не хватает ин
      * Collections users and roles
      */
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles",
-            schema = "auth_service",
+    @JoinTable(name = "users_roles", schema = "auth_service",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
