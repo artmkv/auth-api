@@ -6,6 +6,8 @@ spring:
     password: ${DB_PASS:pass}
   application:
     name: auth-api
+  jpa:
+    show-sql: true
   flyway:
     schemas: auth_service
 

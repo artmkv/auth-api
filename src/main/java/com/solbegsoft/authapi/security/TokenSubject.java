@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.UUID;
+
 /**
  * Token subject
  */
@@ -21,6 +23,6 @@ public class TokenSubject {
     /**
      * userId
      */
-    Long userId;
+    UUID userId;
 
 }

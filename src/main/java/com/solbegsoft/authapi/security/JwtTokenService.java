@@ -16,6 +16,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.UUID;
 
 import static com.solbegsoft.authapi.security.SecurityConstants.HEADER_TOKEN_PREFIX;
 import static com.solbegsoft.authapi.utils.MessagesExceptionConstants.BAD_CREDENTIAL;
@@ -44,7 +45,7 @@ public class JwtTokenService implements TokenService {
     @Value("${JWT_EXPIRATION_S:300}")
     private int expirationS;
 
-    public String createTokenUsingTokenSubject(String username, Long userId) {
+    public String createTokenUsingTokenSubject(String username, UUID userId) {
 
         TokenSubject sub = new TokenSubject(username, userId);
         String result;

@@ -45,4 +45,12 @@ public class AuthExceptionHandler {
         return new ResponseApi<>(e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseApi<String> handlerRuntimeException(RuntimeException e) {
+
+        log.info("Exception {}", e.getMessage());
+        return new ResponseApi<>(e.getMessage());
+    }
+
 }

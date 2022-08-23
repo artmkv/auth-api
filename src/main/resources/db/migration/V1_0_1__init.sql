@@ -1,23 +1,28 @@
-CREATE TABLE auth_service.users
+CREATE
+EXTENSION IF NOT EXISTS "uuid-ossp";
+
+SELECT uuid_generate_v1();
+
+create table auth_service.users
 (
-    id       BIGSERIAL PRIMARY KEY,
-    username CHARACTER VARYING(128) UNIQUE,
-    email    CHARACTER VARYING(128) UNIQUE NOT NULL,
-    password CHARACTER VARYING(128)        NOT NULL,
-    country  CHARACTER VARYING(128),
-    gender   CHARACTER VARYING(24),
-    birthday DATE
+    id       uuid default uuid_generate_v1(),
+    username varchar(255) not null,
+    email    varchar(255) not null unique,
+    password varchar(255) not null,
+    birthday date,
+    country  varchar(255),
+    gender   varchar(255),
+    primary key (id)
 );
 
-CREATE TABLE auth_service.roles
+create table auth_service.roles
 (
-    id       BIGSERIAL PRIMARY KEY,
-    name CHARACTER VARYING(64) NOT NULL
+    name varchar(50) not null primary key
 );
 
-CREATE TABLE auth_service.users_roles
+create table auth_service.users_roles
 (
-    user_id BIGINT REFERENCES auth_service.users (id),
-    role_id BIGINT REFERENCES auth_service.roles (id),
-    PRIMARY KEY (user_id, role_id)
+    user_id   uuid        not null references users,
+    role_name varchar(50) not null references roles,
+    primary key (user_id, role_name)
 );

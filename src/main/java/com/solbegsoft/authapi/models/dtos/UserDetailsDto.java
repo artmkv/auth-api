@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +28,7 @@ public class UserDetailsDto implements UserDetails {
     /**
      * ID
      */
-    private Long id;
+    private UUID id;
 
     /**
      * email
@@ -62,7 +63,7 @@ public class UserDetailsDto implements UserDetails {
         return email;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

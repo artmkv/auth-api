@@ -2,11 +2,10 @@ package com.solbegsoft.authapi.models.entities;
 
 
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Role
@@ -21,34 +20,28 @@ import java.util.Set;
 public class Role {
 
     /**
-     * id
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    /**
      * @see ERole
      */
-    @Column(length = 50)
+    @Id
+    @Column(length = 50, unique = true)
     private String name;
 
     /**
      *  Collections users and roles
      */
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-    private Set<User> users;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id != null && Objects.equals(id, role.id);
+        return Objects.equals(name, role.name) && Objects.equals(users, role.users);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(name, users);
     }
 }

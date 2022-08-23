@@ -3,11 +3,13 @@ package com.solbegsoft.authapi.models.entities;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * User entity
@@ -20,15 +22,15 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    // TODO: 30.07.2022 тут явно не хватает индексов ) добвь их через флайвей, если будут вопросы пиши)
 
     /**
      * id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", columnDefinition = "uuid")
+    private UUID id;
 
     /**
      * username
@@ -51,7 +53,7 @@ public class User {
     /**
      * Country
      */
-    @Column(name = "country", nullable = false)
+    @Column(name = "country")
     private String country;
 
     /**
@@ -72,7 +74,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", schema = "auth_service",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles;
 
     /**

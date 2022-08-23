@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.solbegsoft.authapi.security.SecurityConstants.HEADER_AUTHORIZATION;
 import static com.solbegsoft.authapi.security.SecurityConstants.HEADER_TOKEN_PREFIX;
@@ -44,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = request.getHeader(HEADER_AUTHORIZATION);
         String username;
-        Long userId = null;
+        UUID userId = null;
         if (Objects.nonNull(token) && token.startsWith(HEADER_TOKEN_PREFIX)) {
             TokenSubject tokenSubject = jwtTokenService
                     .validateTokenAndGetTokenSubject(token.replace(HEADER_TOKEN_PREFIX, ""));

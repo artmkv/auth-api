@@ -1,7 +1,6 @@
 package com.solbegsoft.authapi.services;
 
 
-import com.solbegsoft.authapi.models.dtos.UserDetailsDto;
 import com.solbegsoft.authapi.models.mappers.UserConverter;
 import com.solbegsoft.authapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +35,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(userConverter::convertToDto)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
-
 }
