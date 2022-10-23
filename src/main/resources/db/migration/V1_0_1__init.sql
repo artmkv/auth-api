@@ -22,7 +22,7 @@ create table auth_service.roles
 
 create table auth_service.users_roles
 (
-    user_id   uuid        not null references users,
-    role_name varchar(50) not null references roles,
+    user_id   uuid        not null references auth_service.users,
+    role_name varchar(50) not null references auth_service.roles,
     primary key (user_id, role_name)
 );
