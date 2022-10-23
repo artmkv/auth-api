@@ -31,8 +31,8 @@ eureka:
     register-with-eureka: true
     fetchRegistry: true
     service-url:
-      default-zone: ${EUREKA_URL:http://eureka-server:${eureka.client.eureka-server-port}/eureka}
-
+#      default-zone: ${EUREKA_URL:http://eureka-server:${eureka.client.eureka-server-port}/eureka}
+      default-zone: ${EUREKA_URL:http://localhost:8761/eureka}
 zuul:
   host:
     connect-timeout-millis: 500000
