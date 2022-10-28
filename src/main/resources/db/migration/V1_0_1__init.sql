@@ -1,11 +1,11 @@
 CREATE
 EXTENSION IF NOT EXISTS "uuid-ossp";
 
-SELECT uuid_generate_v1();
+SELECT favorites.uuid_generate_v1();
 
 create table auth_service.users
 (
-    id       uuid default uuid_generate_v1(),
+    id       uuid default favorites.uuid_generate_v1(),
     username varchar(255) not null,
     email    varchar(255) not null unique,
     password varchar(255) not null,
