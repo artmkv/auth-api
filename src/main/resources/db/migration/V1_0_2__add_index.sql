@@ -1,1 +1,1 @@
-CREATE INDEX user_index ON auth_service.users (email)
+CREATE INDEX user_index ON users (email)

@@ -18,7 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Table(name = "users", schema = "auth_service")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -72,7 +72,7 @@ public class User {
      * Collections users and roles
      */
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles", schema = "auth_service",
+    @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles;

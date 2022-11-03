@@ -8,8 +8,6 @@ spring:
     name: auth-api
   jpa:
     show-sql: true
-  flyway:
-    schemas: auth_service
 
 server:
   port: 8081

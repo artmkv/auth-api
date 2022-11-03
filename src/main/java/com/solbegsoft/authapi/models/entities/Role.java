@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
-@Table(name = "roles", schema = "auth_service")
+@Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {

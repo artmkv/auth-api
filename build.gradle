@@ -44,15 +44,16 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'org.postgresql:postgresql:42.5.0'
+	runtimeOnly 'com.h2database:h2'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation group: 'com.h2database', name: 'h2', version: '2.1.212'
 
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
-//	testImplementation 'org.testcontainers:postgresql:1.17.4'
-//	testImplementation 'org.testcontainers:testcontainers:1.17.4'
-//	testImplementation 'org.testcontainers:junit-jupiter:1.17.4'
+	testImplementation 'org.testcontainers:postgresql:1.17.4'
+	testImplementation 'org.testcontainers:testcontainers:1.17.4'
+	testImplementation 'org.testcontainers:junit-jupiter:1.17.4'
 
 }
 

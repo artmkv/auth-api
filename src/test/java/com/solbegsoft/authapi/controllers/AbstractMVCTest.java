@@ -20,4 +20,5 @@ public abstract class AbstractMVCTest {
      */
     @Autowired
     protected MockMvc mockMvc;
+
 }

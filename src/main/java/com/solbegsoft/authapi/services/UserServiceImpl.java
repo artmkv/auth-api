@@ -45,11 +45,13 @@ public class UserServiceImpl implements UserService {
             roles.add(readerRole);
         }
 
-        return userRepository.save(User.builder()
-                    .username(request.getUsername())
-                    .email(request.getEmail())
-                    .roles(roles)
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .build());
+        User userToSave = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .roles(roles)
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+
+        return userRepository.save(userToSave);
     }
 }
