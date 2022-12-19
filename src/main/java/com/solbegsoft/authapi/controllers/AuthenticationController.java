@@ -1,12 +1,12 @@
 package com.solbegsoft.authapi.controllers;
 
 
+import com.solbegsoft.authapi.models.dtos.UserDetailsDto;
 import com.solbegsoft.authapi.models.requests.AuthRequest;
 import com.solbegsoft.authapi.models.response.ResponseApi;
 import com.solbegsoft.authapi.security.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,17 +44,13 @@ public class AuthenticationController {
      * @return {@link ResponseApi} with token
      */
     @PostMapping
-    public ResponseApi<String> getAuthentication(@RequestBody AuthRequest request) throws Exception {
+    public ResponseApi<String> getAuthentication(@RequestBody AuthRequest request) {
 
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    request.getLogin(),
-                    request.getPassword()));
-        } catch (BadCredentialsException e) {
-            throw new Exception("Invalid username or password");
-        }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getLogin());
-        final String token = jwtTokenService.createToken(userDetails.getUsername());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                request.getLogin(),
+                request.getPassword()));
+        UserDetailsDto dto = (UserDetailsDto) userDetailsService.loadUserByUsername(request.getLogin());
+        final String token = jwtTokenService.createTokenUsingTokenSubject(dto.getUsername(), dto.getId());
 
         return new ResponseApi<>(jwtTokenService.createBearer(token));
     }

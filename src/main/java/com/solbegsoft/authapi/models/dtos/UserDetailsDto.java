@@ -2,27 +2,33 @@ package com.solbegsoft.authapi.models.dtos;
 
 
 import com.solbegsoft.authapi.models.entities.Role;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
  * User detail dto
  */
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserDetailsDto implements UserDetails {
 
     /**
      * username
      */
     private String username;
+
+    /**
+     * ID
+     */
+    private UUID id;
 
     /**
      * email
@@ -54,7 +60,11 @@ public class UserDetailsDto implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     @Override

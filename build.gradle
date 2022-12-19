@@ -33,6 +33,8 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.10.RELEASE'
 
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+
 	implementation 'junit:junit:4.13.2'
 	implementation 'org.flywaydb:flyway-core'
 
@@ -41,13 +43,20 @@ dependencies {
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
-	implementation 'org.mapstruct:mapstruct:1.5.1.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
+	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'org.postgresql:postgresql:42.5.1'
+	runtimeOnly 'com.h2database:h2'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation group: 'com.h2database', name: 'h2', version: '2.1.212'
+
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+	testImplementation 'org.testcontainers:postgresql:1.17.4'
+	testImplementation 'org.testcontainers:testcontainers:1.17.4'
+	testImplementation 'org.testcontainers:junit-jupiter:1.17.4'
+
 }
 
 dependencyManagement {

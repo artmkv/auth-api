@@ -1,6 +1,8 @@
 package com.solbegsoft.authapi.security;
 
 
+import java.util.UUID;
+
 /**
  * Token service
  */
@@ -9,24 +11,25 @@ public interface TokenService {
     /**
      * Create Token
      *
-     * @param username
-     * @return
+     * @param username  Username
+     * @param id User ID
+     * @return token
      */
-    String createToken(String username);
+    String createTokenUsingTokenSubject(String username, UUID id);
 
     /**
-     * validate Token
+     * Validate Token
      *
-     * @param token
+     * @param token Token
      * @return username
      */
-    String validateTokenAndGetUsername(String token);
+    TokenSubject validateTokenAndGetTokenSubject(String token);
 
     /**
-     * create Bearer + token
+     * Create Bearer + token
      *
-     * @param token
-     * @return string
+     * @param token token
+     * @return {@link TokenSubject}
      */
     String createBearer(String token);
 }
