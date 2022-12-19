@@ -1,0 +1,59 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/demobase}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:pass}
+  application:
+    name: auth-api
+  jpa:
+    show-sql: true
+
+server:
+  port: 8081
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:Fx54Yey23Ur}
+    expiration-sec: ${JWT_EXPIRATION_S:300000}
+
+ribbon:
+  eureka:
+    enabled: true
+
+eureka:
+  instance:
+    appname: auth-api
+  client:
+    eureka-server-port: 8761
+    register-with-eureka: true
+    fetchRegistry: true
+    service-url:
+      default-zone: http://eureka-server:${eureka.client.eureka-server-port}/eureka
+
+zuul:
+  host:
+    connect-timeout-millis: 500000
+    socket-timeout-millis: 500000
+  ignored-services: "*"
+  routes:
+    beers-api:
+      path: /beers-api/**
+      url: http://localhost:8091/beers-api
+      strip-prefix: true
+    favorites-api:
+      path: /favorites-api/**
+      url: http://localhost:8071/favorites-api
+      strip-prefix: true
+    auth-api:
+      path: /auth/**
+      url: forward:/auth-api
+      strip-prefix: true
+
+hystrix:
+  command:
+    beers-api:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 500000

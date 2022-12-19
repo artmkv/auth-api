@@ -1,0 +1,1 @@
+CREATE INDEX user_index ON users (email)
