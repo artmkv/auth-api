@@ -8,9 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -21,9 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test validation request for Authentication Controller
  */
 class ValidationAuthenticationControllerTest extends AbstractControllerTest {
-
-    @MockBean
-    private UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
 
     /**
      * Test with any data in AuthRequest {@link AuthenticationController#getAuthentication(AuthRequest)}

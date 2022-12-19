@@ -5,11 +5,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solbegsoft.authapi.exceptions.SecurityTokenException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
@@ -19,11 +20,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.solbegsoft.authapi.security.SecurityConstants.HEADER_TOKEN_PREFIX;
-import static com.solbegsoft.authapi.utils.MessagesExceptionConstants.BAD_CREDENTIAL;
 
 /**
  * jwt token service
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtTokenService implements TokenService {
@@ -46,7 +47,6 @@ public class JwtTokenService implements TokenService {
     private int expirationS;
 
     public String createTokenUsingTokenSubject(String username, UUID userId) {
-
         TokenSubject sub = new TokenSubject(username, userId);
         String result;
         try {
@@ -71,10 +71,10 @@ public class JwtTokenService implements TokenService {
                     .parseClaimsJws(token).getBody();
             Date expiration = claims.getExpiration();
             if (expiration.before(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))) {
-                throw new BadCredentialsException(BAD_CREDENTIAL);
+                log.warn("BAD_CREDENTIAL: {}", claims.getSubject());
             }
             return objectMapper.readValue(claims.getSubject(), TokenSubject.class);
-        } catch (Exception e) {
+        } catch (JsonProcessingException | JwtException e) {
             throw new SecurityTokenException(e.getMessage());
         }
     }
@@ -83,5 +83,4 @@ public class JwtTokenService implements TokenService {
     public String createBearer(String token) {
         return HEADER_TOKEN_PREFIX + token;
     }
-
 }

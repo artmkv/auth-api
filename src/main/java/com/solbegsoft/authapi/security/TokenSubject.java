@@ -1,9 +1,7 @@
 package com.solbegsoft.authapi.security;
 
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -13,16 +11,17 @@ import java.util.UUID;
 @Data
 @ToString
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TokenSubject {
 
     /**
      * Username
      */
-    String username;
+   private String username;
 
     /**
      * userId
      */
-    UUID userId;
-
+    private UUID userId;
 }

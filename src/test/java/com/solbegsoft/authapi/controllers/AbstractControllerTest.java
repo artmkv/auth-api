@@ -19,11 +19,10 @@ public abstract class AbstractControllerTest extends AbstractMVCTest {
     /**
      * General controllers URL
      */
-    public static final String URL_COMMON_ENDPOINT = "/auth-api/v1/auth";
-
+    public static final String GENERAL_ENDPOINT = "/auth-api/v1/auth";
 
     protected String getEndPoint() {
-        return URL_COMMON_ENDPOINT;
+        return GENERAL_ENDPOINT;
     }
 
     /**
@@ -33,7 +32,7 @@ public abstract class AbstractControllerTest extends AbstractMVCTest {
      */
     protected AuthRequest createAuthRequest() {
         AuthRequest request = new AuthRequest();
-        request.setLogin("userR@mail.ru");
+        request.setLogin("userR@mail.com");
         request.setPassword("87654321");
 
         return request;
@@ -50,7 +49,6 @@ public abstract class AbstractControllerTest extends AbstractMVCTest {
         AuthRequest request = new AuthRequest();
         request.setLogin(login);
         request.setPassword(password);
-
         return request;
     }
 }

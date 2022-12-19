@@ -1,27 +1,27 @@
 package com.solbegsoft.authapi.controllers;
 
 
+import com.solbegsoft.authapi.models.dtos.UserDetailsDto;
 import com.solbegsoft.authapi.models.entities.ERole;
 import com.solbegsoft.authapi.models.entities.Role;
 import com.solbegsoft.authapi.models.entities.User;
 import com.solbegsoft.authapi.models.requests.AuthRequest;
-import com.solbegsoft.authapi.repositories.RoleRepository;
-import com.solbegsoft.authapi.repositories.UserRepository;
-import com.solbegsoft.authapi.services.UserService;
-import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,81 +33,66 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthenticationControllerTest extends AbstractControllerTest {
 
     /**
-     * @see RoleRepository
+     * @see WebApplicationContext
      */
-    @MockBean
-    private RoleRepository roleRepository;
+    @Autowired
+    private WebApplicationContext context;
 
     /**
-     * @see UserRepository
+     * Setup context before start test
      */
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
-
-    @MockBean
-    private UserService userService;
-
-    @Test
-    void testTestTest() throws Exception{
-
+    @Before
+    public void setup() {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
     }
 
+    /**
+     * Test method {@link AuthenticationController#getAuthentication(AuthRequest)}
+     *
+     * @throws Exception exception
+     */
     @Test
-    void testGetAuthentication_WithCorrectRequest_ShouldReturnToken() throws Exception {
-        AuthRequest request = createAuthRequest();
+    void testGetAuthentication_WithoutAuthentication_ShouldReturnForbidden() throws Exception {
+        AuthRequest authRequest = createAuthRequest();
+        String login = "userR@mail.com";
+        String password = "87654321";
 
-        usernamePasswordAuthenticationToken.setAuthenticated(true);
-        when(userRepository.findByEmail(request.getLogin())).thenReturn(Optional.empty());
+        UserDetailsDto dto = new UserDetailsDto();
+        dto.setEmail(login);
+        dto.setPassword(password);
 
-        when(usernamePasswordAuthenticationToken.isAuthenticated()).thenReturn(true);
-
-        mockMvc.perform(post(getEndPoint())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                ).andDo(print())
-                .andExpect(status().isOk());
+        mockMvc.perform(post(getEndPoint()))
+                .andDo(print());
     }
 
+    /**
+     * Test method {@link AuthenticationController#getAuthentication(AuthRequest)}
+     *
+     * @throws Exception exception
+     */
     @Test
-    @WithUserDetails("user@test.io")
-    void testGetAuthentication_WithCorrectRequest_ShouldReturnOk() throws Exception {
-        AuthRequest request = createAuthRequest("user@test.io", "12345678");
+    void testGetAuthentication_WithAuthentication_ShouldReturnForbidden() throws Exception {
 
-        mockMvc.perform(post(getEndPoint())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                ).andDo(print())
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.data").value(Matchers.stringContainsInOrder("Bearer")));
+        var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_READER"));
+        var authenticationToken = new UsernamePasswordAuthenticationToken(null, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+        mockMvc.perform(get("/auth-api/v1/test/r"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
-
-    @Test
-    @WithMockUser(username = "userR@mail.com", password = "87654321", roles = {"ROLE_READER"})
-    void testGetAuthentication_WithCorrectRequest22_ShouldReturnSomething() throws Exception {
-
-        User user = createUser("test@mail.com", "87654321");
-
-        AuthRequest request = createAuthRequest("userR@mail.com", "87654321");
-
-        Optional<User> optionalUser = Optional.of(user);
-        when(userRepository.findByEmail(request.getLogin())).thenReturn(optionalUser);
-
-        mockMvc.perform(post(getEndPoint())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                ).andDo(print())
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.data").value(Matchers.stringContainsInOrder("Bearer")));
-    }
-
+    /**
+     * Test method {@link AuthenticationController#getAuthentication(AuthRequest)}
+     *
+     * @throws Exception exception
+     */
     @Test
     void testGetAuthentication_WithCorrectRequest_ShouldReturnUserNotFoundException() throws Exception {
 
-        User user = createUser("userR@mail.com", "87654321");
+        User user = createUser("userR", "userR@mail.com", "87654321");
         AuthRequest request = createAuthRequest(user.getEmail(), user.getPassword());
 
         mockMvc.perform(post(getEndPoint())
@@ -118,14 +103,22 @@ class AuthenticationControllerTest extends AbstractControllerTest {
                 .andExpect(jsonPath("$.data").value("Bad credentials"));
     }
 
-    private User createUser(String email, String password) {
+    /**
+     * Create user
+     *
+     * @param username username
+     * @param email    e-mail
+     * @param password password
+     * @return {@link User}
+     */
+    private User createUser(String username, String email, String password) {
         Role role = new Role();
         role.setName(ERole.ROLE_READER.name());
         Set<Role> setRoles = Set.of(role);
 
         User result = new User();
         result.setId(UUID.randomUUID());
-        result.setUsername("NameUser");
+        result.setUsername(username);
         result.setEmail(email);
         result.setPassword(password);
         result.setRoles(setRoles);
@@ -135,5 +128,4 @@ class AuthenticationControllerTest extends AbstractControllerTest {
 
         return result;
     }
-
 }
