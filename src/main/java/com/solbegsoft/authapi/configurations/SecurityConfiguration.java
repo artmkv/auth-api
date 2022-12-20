@@ -82,7 +82,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth-api/v1/test/all").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth-api/v1/test/s").permitAll()
                 .antMatchers("/auth-api/v1/test/r").hasAuthority(ERole.ROLE_READER.name())
-                .antMatchers("/auth-api/v1/test/w").hasAuthority(ERole.ROLE_WRITER.name());
+                .antMatchers("/auth-api/v1/test/w").hasAuthority(ERole.ROLE_WRITER.name())
+                .antMatchers("/auth-api/v1/rabbit").permitAll()
+        ;
         http.authorizeRequests().anyRequest().authenticated();
         JwtAuthFilter tokenFilter = new JwtAuthFilter(userDetailService, jwtTokenService);
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
